@@ -3,6 +3,7 @@
 ## ⚠️ Important Database Considerations
 
 **Vercel is a serverless platform**, which means:
+
 - It doesn't support traditional MySQL connections directly
 - Your local MySQL database won't be accessible from Vercel
 - You need a cloud database for production deployment
@@ -10,24 +11,28 @@
 ## 🌐 Database Options for Vercel Deployment
 
 ### Option 1: PlanetScale (Recommended - Free Tier Available)
+
 1. **Sign up at:** [https://planetscale.com](https://planetscale.com)
 2. **Create a new database**
 3. **Get connection string** from the dashboard
 4. **Update environment variables** in Vercel
 
 ### Option 2: Railway MySQL
+
 1. **Sign up at:** [https://railway.app](https://railway.app)
 2. **Deploy MySQL database**
 3. **Get connection details**
 4. **Update environment variables**
 
 ### Option 3: AWS RDS, Google Cloud SQL, or Azure Database
+
 - More enterprise solutions
 - Require cloud provider accounts
 
 ## 🚀 Step-by-Step Vercel Deployment
 
 ### Step 1: Prepare Your Repository
+
 ```bash
 # Add and commit all changes
 git add .
@@ -38,6 +43,7 @@ git push origin main
 ### Step 2: Deploy to Vercel
 
 #### Option A: Using Vercel CLI
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -50,6 +56,7 @@ vercel
 ```
 
 #### Option B: Using Vercel Dashboard
+
 1. **Go to:** [https://vercel.com](https://vercel.com)
 2. **Sign in** with GitHub
 3. **Import** your repository
@@ -62,7 +69,7 @@ In your Vercel project dashboard, add these environment variables:
 
 ```env
 HOST=your_cloud_database_host
-USER=your_cloud_database_username  
+USER=your_cloud_database_username
 PASSWORD=your_cloud_database_password
 DATABASE=your_cloud_database_name
 NODE_ENV=production
@@ -71,6 +78,7 @@ NODE_ENV=production
 ## 📝 Environment Variables Setup
 
 ### For PlanetScale:
+
 ```env
 HOST=gateway01.us-east-1.prod.aws.planetscale.com
 USER=your_planetscale_username
@@ -80,6 +88,7 @@ NODE_ENV=production
 ```
 
 ### For Railway:
+
 ```env
 HOST=containers-us-west-xxx.railway.app
 USER=root
@@ -91,6 +100,7 @@ NODE_ENV=production
 ## 🔧 Files Added for Vercel Deployment
 
 ### 1. `vercel.json`
+
 ```json
 {
   "version": 2,
@@ -110,11 +120,13 @@ NODE_ENV=production
 ```
 
 ### 2. Updated `index.js`
+
 - Changed from single connection to connection pool
 - Added export for Vercel serverless environment
 - Conditional server listening for local development
 
 ### 3. Updated `database.js`
+
 - Uses connection pool instead of single connection
 - Better error handling for serverless environment
 - Automatic table creation
@@ -122,18 +134,20 @@ NODE_ENV=production
 ## 🌍 Testing Your Deployed API
 
 After deployment, your API will be available at:
+
 ```
 https://your-project-name.vercel.app
 ```
 
 ### Test Endpoints:
+
 ```bash
 # Add a school
 curl -X POST https://your-project-name.vercel.app/addSchool \
   -H "Content-Type: application/json" \
   -d '{"name":"Test School","address":"123 Main St","latitude":40.7128,"longitude":-74.0060}'
 
-# List schools  
+# List schools
 curl "https://your-project-name.vercel.app/listSchools?latitude=40.7589&longitude=-73.9851"
 ```
 
@@ -142,11 +156,13 @@ curl "https://your-project-name.vercel.app/listSchools?latitude=40.7589&longitud
 ### Common Issues:
 
 1. **Database Connection Error**
+
    - Verify environment variables in Vercel dashboard
    - Ensure cloud database is running and accessible
    - Check connection string format
 
 2. **Function Timeout**
+
    - Vercel has a 10-second timeout for free plans
    - Optimize database queries
    - Consider upgrading Vercel plan
@@ -155,9 +171,9 @@ curl "https://your-project-name.vercel.app/listSchools?latitude=40.7589&longitud
    - Add CORS middleware if needed for frontend access
    ```javascript
    app.use((req, res, next) => {
-     res.header('Access-Control-Allow-Origin', '*');
-     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-     res.header('Access-Control-Allow-Headers', 'Content-Type');
+     res.header("Access-Control-Allow-Origin", "*");
+     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+     res.header("Access-Control-Allow-Headers", "Content-Type");
      next();
    });
    ```
@@ -165,6 +181,7 @@ curl "https://your-project-name.vercel.app/listSchools?latitude=40.7589&longitud
 ## 📊 Local Development vs Production
 
 ### Local Development:
+
 ```bash
 npm run dev
 # Uses local MySQL database
@@ -172,6 +189,7 @@ npm run dev
 ```
 
 ### Production (Vercel):
+
 ```bash
 # Automatically deployed on push to main branch
 # Uses cloud database

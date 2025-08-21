@@ -3,6 +3,7 @@
 A Node.js REST API for managing schools with proximity-based search functionality using MySQL database.
 
 ## 📋 Table of Contents
+
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
@@ -36,6 +37,7 @@ Before running this application, make sure you have:
 ## 📦 Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/022-Agamsingh/School_Management_Api.git
    cd School_Management_Api
@@ -49,6 +51,7 @@ Before running this application, make sure you have:
 ## 🗃️ Database Setup
 
 1. **Create MySQL Database**
+
    ```sql
    CREATE DATABASE SchoolDB;
    USE SchoolDB;
@@ -57,6 +60,7 @@ Before running this application, make sure you have:
 2. **The application will automatically create the schools table when you run it for the first time**
 
    The table structure:
+
    ```sql
    CREATE TABLE schools (
        id INT AUTO_INCREMENT PRIMARY KEY,
@@ -70,6 +74,7 @@ Before running this application, make sure you have:
 ## ⚙️ Configuration
 
 1. **Create a `.env` file in the root directory**
+
    ```env
    HOST=localhost
    USER=your_mysql_username
@@ -83,11 +88,13 @@ Before running this application, make sure you have:
 ## 🚀 Running the Application
 
 1. **Start the server**
+
    ```bash
    node index.js
    ```
 
 2. **You should see:**
+
    ```
    Connected to the database
    Server is running on port 3001
@@ -98,6 +105,7 @@ Before running this application, make sure you have:
 ## 📚 API Endpoints
 
 ### 1. Add School
+
 - **URL:** `POST /addSchool`
 - **Description:** Add a new school to the database
 - **Request Body:**
@@ -106,7 +114,7 @@ Before running this application, make sure you have:
     "name": "Central High School",
     "address": "123 Education Street, New York, NY",
     "latitude": 40.7128,
-    "longitude": -74.0060
+    "longitude": -74.006
   }
   ```
 - **Success Response:**
@@ -117,12 +125,13 @@ Before running this application, make sure you have:
       "name": "Central High School",
       "address": "123 Education Street, New York, NY",
       "latitude": 40.7128,
-      "longitude": -74.0060
+      "longitude": -74.006
     }
   }
   ```
 
 ### 2. List Schools by Proximity
+
 - **URL:** `GET /listSchools?latitude={lat}&longitude={lng}`
 - **Description:** Get all schools sorted by distance from user's location
 - **Parameters:**
@@ -143,7 +152,7 @@ Before running this application, make sure you have:
         "name": "Central High School",
         "address": "123 Education Street, New York, NY",
         "latitude": 40.7128,
-        "longitude": -74.0060,
+        "longitude": -74.006,
         "distance": 5.234
       }
     ]
@@ -153,10 +162,12 @@ Before running this application, make sure you have:
 ## 🧪 Testing
 
 ### Option 1: Using Postman
+
 1. **Import the collection:** `School_Management_API.postman_collection.json`
 2. **Run the requests** to test both endpoints
 
 ### Option 2: Using curl
+
 ```bash
 # Add a school
 curl -X POST http://localhost:3001/addSchool \
@@ -168,6 +179,7 @@ curl "http://localhost:3001/listSchools?latitude=40.7589&longitude=-73.9851"
 ```
 
 ### Option 3: Using PowerShell
+
 ```powershell
 # Add a school
 Invoke-RestMethod -Uri "http://localhost:3001/addSchool" -Method POST -ContentType "application/json" -Body '{"name":"Test School","address":"123 Main St","latitude":40.7128,"longitude":-74.0060}'
@@ -177,6 +189,7 @@ Invoke-RestMethod -Uri "http://localhost:3001/listSchools?latitude=40.7589&longi
 ```
 
 ### Option 4: Using Test Script
+
 ```bash
 node test-api.js
 ```
@@ -208,17 +221,20 @@ School_Management_Api/
 ## 🔍 Key Features Explained
 
 ### Input Validation
+
 - **Name & Address:** Must be non-empty strings
 - **Coordinates:** Must be valid numbers within geographic ranges
   - Latitude: -90 to 90 degrees
   - Longitude: -180 to 180 degrees
 
 ### Distance Calculation
+
 - Uses the **Haversine formula** for accurate geographic distance calculation
 - Returns distance in kilometers
 - Schools are sorted from closest to farthest
 
 ### Error Handling
+
 - Comprehensive error messages for invalid inputs
 - Database connection error handling
 - Proper HTTP status codes (200, 201, 400, 500)
@@ -228,11 +244,13 @@ School_Management_Api/
 ### Common Issues
 
 1. **Database Connection Error**
+
    - Check MySQL server is running
    - Verify credentials in `.env` file
    - Ensure database `SchoolDB` exists
 
 2. **Port Already in Use**
+
    - Change PORT in `.env` file
    - Or kill the process using the port
 
@@ -243,6 +261,7 @@ School_Management_Api/
 ## 📝 API Usage Examples
 
 ### Adding Multiple Schools
+
 ```javascript
 // Add first school
 POST /addSchool
@@ -257,7 +276,7 @@ POST /addSchool
 POST /addSchool
 {
   "name": "MIT",
-  "address": "Cambridge, MA", 
+  "address": "Cambridge, MA",
   "latitude": 42.3601,
   "longitude": -71.0942
 }
@@ -281,6 +300,7 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 👨‍💻 Author
 
 **Agam Singh**
+
 - GitHub: [@022-Agamsingh](https://github.com/022-Agamsingh)
 
 ---

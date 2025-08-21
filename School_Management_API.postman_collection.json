@@ -1,0 +1,68 @@
+{
+	"info": {
+		"name": "School API",
+		"description": "Collection to test school APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Add a School",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"My High School\",\n    \"address\": \"123 School Street, New York\",\n    \"latitude\": 40.7128,\n    \"longitude\": -74.0060\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3001/addSchool",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"addSchool"
+					]
+				},
+				"description": "This adds a new school to the database. Just click Send!"
+			}
+		},
+		{
+			"name": "2. Find Schools Near Me",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/listSchools?latitude=40.7589&longitude=-73.9851",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"listSchools"
+					],
+					"query": [
+						{
+							"key": "latitude",
+							"value": "40.7589",
+							"description": "Your location - latitude"
+						},
+						{
+							"key": "longitude",
+							"value": "-73.9851",
+							"description": "Your location - longitude"
+						}
+					]
+				},
+				"description": "This shows all schools sorted by how close they are to you. Change the latitude and longitude to your location!"
+			}
+		}
+	]
+}

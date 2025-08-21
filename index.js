@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import database from "./database.js";
+import pool from "./database.js";
 
 dotenv.config();
 
@@ -46,7 +46,7 @@ app.post("/addSchool", async function(req, res) {
         }
         
        
-        await database.execute(
+        await pool.execute(
             "INSERT INTO schools (name, address, latitude, longitude) VALUES (?, ?, ?, ?)",
             [name.trim(), address.trim(), lat, lng]
         );
@@ -84,7 +84,8 @@ app.get("/listSchools", async function(req, res) {
         }
         
         
-        const [schools] = await database.execute("SELECT * FROM schools");
+        // Fetch all schools from database
+        const [schools] = await pool.execute("SELECT * FROM schools");
         
       
         const toRadians = (degrees) => (degrees * Math.PI) / 180;
@@ -133,7 +134,15 @@ app.get("/listSchools", async function(req, res) {
     }
 }); 
 
+// For Vercel deployment, export the app instead of listening
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, function(){
-    console.log("Server is running on port " + PORT);
-});
+
+// Only listen when running locally
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, function(){
+        console.log("Server is running on port " + PORT);
+    });
+}
+
+// Export for Vercel
+export default app;

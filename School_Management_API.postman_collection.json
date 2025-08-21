@@ -20,12 +20,13 @@
 					"raw": "{\n    \"name\": \"My High School\",\n    \"address\": \"123 School Street, New York\",\n    \"latitude\": 40.7128,\n    \"longitude\": -74.0060\n}"
 				},
 				"url": {
-					"raw": "http://localhost:3001/addSchool",
-					"protocol": "http",
+					"raw": "https://school-management-api-steel.vercel.app/addSchool",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"school-management-api-steel",
+						"vercel",
+						"app"
 					],
-					"port": "3001",
 					"path": [
 						"addSchool"
 					]
@@ -39,12 +40,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3001/listSchools?latitude=40.7589&longitude=-73.9851",
-					"protocol": "http",
+					"raw": "https://school-management-api-steel.vercel.app/listSchools?latitude=40.7589&longitude=-73.9851",
+					"protocol": "https",
 					"host": [
-						"localhost"
+						"school-management-api-steel",
+						"vercel",
+						"app"
 					],
-					"port": "3001",
 					"path": [
 						"listSchools"
 					],

@@ -42,7 +42,7 @@ const App = () => {
 
   const checkAuthStatus = async () => {
     try {
-      const response = await fetch('http://localhost:3001/profile', {
+      const response = await fetch('http://localhost:3000/profile', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -107,7 +107,7 @@ const App = () => {
 
     switch (currentPage) {
       case 'dashboard':
-        return <Dashboard />;
+        return <Dashboard onNavigate={setCurrentPage} />;
       case 'schools':
         return <SchoolList />;
       case 'add-school':
@@ -115,7 +115,7 @@ const App = () => {
       case 'profile':
         return <Profile user={user} />;
       default:
-        return <Dashboard />;
+        return <Dashboard onNavigate={setCurrentPage} />;
     }
   };
 

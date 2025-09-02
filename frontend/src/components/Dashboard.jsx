@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Dashboard = () => {
+const Dashboard = ({ onNavigate }) => {
     const [stats, setStats] = useState({
         totalSchools: 0,
         nearestSchool: null
@@ -8,6 +8,23 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [userLocation, setUserLocation] = useState(null);
+
+    // Handler functions for navigation
+    const handleViewAllSchools = () => {
+        if (onNavigate) {
+            onNavigate('schools');
+        } else {
+            console.log('Navigate to schools page');
+        }
+    };
+
+    const handleAddNewSchool = () => {
+        if (onNavigate) {
+            onNavigate('add-school');
+        } else {
+            console.log('Navigate to add school page');
+        }
+    };
 
     const containerStyles = {
         padding: '30px',
@@ -308,7 +325,7 @@ const Dashboard = () => {
             }}>
                 <h3 style={{ color: '#2c3e50', marginBottom: '15px' }}>Quick Actions</h3>
                 <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
-                    <div style={{
+                    <button onClick={handleViewAllSchools} style={{
                         padding: '15px 25px',
                         backgroundColor: '#3498db',
                         color: 'white',
@@ -319,19 +336,20 @@ const Dashboard = () => {
                         transition: 'background-color 0.3s ease'
                     }}>
                         View All Schools
-                    </div>
-                    <div style={{
-                        padding: '15px 25px',
-                        backgroundColor: '#27ae60',
-                        color: 'white',
-                        borderRadius: '8px',
-                        cursor: 'pointer',
-                        fontSize: '14px',
-                        fontWeight: 'bold',
-                        transition: 'background-color 0.3s ease'
-                    }}>
+                    </button>
+                    <button onClick={handleAddNewSchool} textDecoration="none" border="none"
+                        style={{
+                            padding: '15px 25px',
+                            backgroundColor: '#27ae60',
+                            color: 'white',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            transition: 'background-color 0.3s ease'
+                        }}>
                         Add New School
-                    </div>
+                    </button>
                 </div>
             </div>
         </div>

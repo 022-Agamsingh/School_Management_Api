@@ -18,7 +18,7 @@ const app = express();
 
 
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:3000"],
+    origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:3001"],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -27,14 +27,14 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// Define routes first
+
 app.get("/", (req, res) => {
     res.json({ message: "Server is running!" });
 });
 
 app.post("/signup", async (req, res) => {
     try { 
-        // Validate input
+       
         const validation = isvaildsignup(req);
         if (!validation.isValid) {
             return res.status(400).json({ error: validation.error });
@@ -95,36 +95,31 @@ try{
 
 
 
-
-
-
-// Connect to database and start server
-connectDB()
-.then(() => {
-    console.log("MongoDB connected");
-    const PORT = process.env.PORT || 3001;
-    const server = app.listen(PORT, '0.0.0.0', () => {
-        console.log(`Server is running on http://localhost:${PORT}`);
-        console.log(`Server is listening on all interfaces at port ${PORT}`);
-    });
-    
-    server.on('error', (err) => {
-        console.error('Server error:', err);
-    });
-}).catch((err)=>{
-    console.error("MongoDB connection error:", err);
+app.put("/profile",userAuth,async(req,res)=>{
+    try{
+        const { name, email } = req.body;
+        await User.findByIdAndUpdate(req.user._id, { name, email }, { new: true });
+        res.status(200).json({ message: "User profile updated successfully" });
+    }catch(err){
+        console.error("Error updating user profile:", err.message);
+        res.status(500).json({ error: "Internal server error" });
+    }
 });
-
-
-
-
-
+app.delete("/profile",userAuth,async(req,res)=>{
+    try{
+        await User.findByIdAndDelete(req.user._id);
+        res.status(200).json({ message: "User profile deleted successfully" });
+    }catch(err){
+        console.error("Error deleting user profile:", err.message);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
 
 app.post("/addSchool", userAuth, async function(req, res) {
     try {
         const { name, address, latitude, longitude } = req.body;
 
-        // Validate school data
+      
         const valid_date = isvalidSchoolData(req);
         if (!valid_date.isValid) {
             return res.status(400).json({ error: valid_date.error });
@@ -133,14 +128,13 @@ app.post("/addSchool", userAuth, async function(req, res) {
         const lat = Number(latitude);
         const lng = Number(longitude);
         
-        // Validate latitude and longitude ranges
+        
         const latinput = { latitude: lat, longitude: lng };
         const validationResponse = logValidation(latinput);
         if (!validationResponse.isValid) {
             return res.status(400).json({ error: validationResponse.error });
         }
 
-        // Create new school document
         const newSchool = new School({
             name: name.trim(),
             address: address.trim(),
@@ -178,8 +172,6 @@ app.get("/listSchools", async function(req, res) {
     try {
         const userLat = parseFloat(req.query.latitude);
         const userLng = parseFloat(req.query.longitude);
-        
-        // Validate user coordinates
         if (isNaN(userLat) || isNaN(userLng)) {
             return res.status(400).json({ 
                 error: "Valid latitude and longitude are required as query parameters." 
@@ -194,13 +186,13 @@ app.get("/listSchools", async function(req, res) {
             return res.status(400).json({ error: "User longitude must be between -180 and 180 degrees." });
         }
         
-        // Fetch all schools from MongoDB
+       
         const schools = await School.find({});
         
-        // Helper function to convert degrees to radians
+        
         const toRadians = (degrees) => (degrees * Math.PI) / 180;
         
-        // Calculate distance using Haversine formula
+    
         const calculateDistance = (lat1, lng1, lat2, lng2) => {
             const R = 6371; // Earth's radius in kilometers
             const dLat = toRadians(lat2 - lat1);
@@ -214,7 +206,7 @@ app.get("/listSchools", async function(req, res) {
             return distance;
         };
         
-        // Calculate distance for each school and add to response
+        
         const schoolsWithDistance = schools.map(school => ({
             id: school._id,
             name: school.name,
@@ -230,7 +222,7 @@ app.get("/listSchools", async function(req, res) {
             createdAt: school.createdAt
         }));
         
-        // Sort schools by distance (nearest first)
+      
         const sortedSchools = schoolsWithDistance.sort((a, b) => a.distance - b.distance);
         
         res.json({
@@ -246,7 +238,21 @@ app.get("/listSchools", async function(req, res) {
     }
 }); 
 
-
-const PORT = process.env.PORT || 3001;
+// Start server after defining all routes
+connectDB()
+.then(() => {
+    console.log("MongoDB connected");
+    const PORT = process.env.PORT || 3001;
+    const server = app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+        console.log(`Server is listening on all interfaces at port ${PORT}`);
+    });
+    
+    server.on('error', (err) => {
+        console.error('Server error:', err);
+    });
+}).catch((err)=>{
+    console.error("MongoDB connection error:", err);
+});
 
 export default app;

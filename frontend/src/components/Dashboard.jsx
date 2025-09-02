@@ -116,8 +116,8 @@ const Dashboard = () => {
                 },
                 (error) => {
                     setError('Unable to get your location. Using default coordinates.');
-                    // Use default coordinates (New York City)
-                    const defaultLocation = { latitude: 40.7128, longitude: -74.0060 };
+                    // Use default coordinates (New Delhi)
+                    const defaultLocation = { Latitude: 28.753846, Longitude: 77.494135 };
                     setUserLocation(defaultLocation);
                     fetchSchoolsData(defaultLocation);
                 }

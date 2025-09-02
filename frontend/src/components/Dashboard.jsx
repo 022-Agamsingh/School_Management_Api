@@ -3,13 +3,13 @@ import React, { useState, useEffect } from 'react';
 const Dashboard = ({ onNavigate }) => {
     const [stats, setStats] = useState({
         totalSchools: 0,
-        nearestSchool: null
+
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [userLocation, setUserLocation] = useState(null);
 
-    // Handler functions for navigation
+
     const handleViewAllSchools = () => {
         if (onNavigate) {
             onNavigate('schools');
@@ -165,7 +165,7 @@ const Dashboard = ({ onNavigate }) => {
             if (response.ok) {
                 setStats({
                     totalSchools: data.totalSchools,
-                    nearestSchool: data.schools.length > 0 ? data.schools[0] : null
+                    // nearestSchool: data.schools.length > 0 ? data.schools[0] : null
                 });
             } else {
                 setError(data.error || 'Failed to fetch schools data');

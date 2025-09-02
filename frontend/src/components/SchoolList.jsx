@@ -291,12 +291,12 @@ const SchoolList = () => {
                                             </div>
                                         </td>
                                         <td style={tdStyles}>
-                                            <div style={{ maxWidth: '200px', wordWrap: 'break-word' }}>
+                                            <div style={{ maxWidth: '200px', wordWrap: 'break-word', color: '#2c3e50' }}>
                                                 {school.address}
                                             </div>
                                         </td>
                                         <td style={tdStyles}>
-                                            <div style={{ fontSize: '12px', fontFamily: 'monospace' }}>
+                                            <div style={{ fontSize: '12px', fontFamily: 'monospace', color: '#7f8c8d' }}>
                                                 <div>Lat: {school.latitude}</div>
                                                 <div>Lng: {school.longitude}</div>
                                             </div>

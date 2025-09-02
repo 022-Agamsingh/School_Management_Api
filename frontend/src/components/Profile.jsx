@@ -10,6 +10,10 @@ const Profile = () => {
         password: '',
         confirmPassword: ''
     });
+    const [stats, setStats] = useState({
+        totalSchools: 0,
+
+    });
     const [updateLoading, setUpdateLoading] = useState(false);
     const [updateMessage, setUpdateMessage] = useState('');
     const [updateSuccess, setUpdateSuccess] = useState(false);
@@ -167,6 +171,41 @@ const Profile = () => {
         borderBottom: '1px solid #ecf0f1'
     };
 
+    const fetchSchoolsData = async (location) => {
+        try {
+            const response = await fetch(
+                `http://localhost:3000/listSchools?latitude=${location.latitude}&longitude=${location.longitude}`,
+                {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setStats(prevStats => ({
+                    ...prevStats,
+                    totalSchools: data.totalSchools || 0
+                }));
+            } else {
+                console.error('Failed to fetch schools data:', data.error);
+                setStats(prevStats => ({
+                    ...prevStats,
+                    totalSchools: 0
+                }));
+            }
+        } catch (error) {
+            console.error('Network error fetching schools:', error);
+            setStats(prevStats => ({
+                ...prevStats,
+                totalSchools: 0
+            }));
+        }
+    };
     const fetchUserProfile = async () => {
         setLoading(true);
         setError('');
@@ -296,8 +335,33 @@ const Profile = () => {
         });
     };
 
+    const fetchSchoolStats = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const location = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
+                    };
+                    fetchSchoolsData(location);
+                },
+                (error) => {
+                    console.error('Geolocation error:', error);
+                    // Use default location if geolocation fails
+                    const defaultLocation = { latitude: 0, longitude: 0 };
+                    fetchSchoolsData(defaultLocation);
+                }
+            );
+        } else {
+            // Use default location if geolocation is not supported
+            const defaultLocation = { latitude: 0, longitude: 0 };
+            fetchSchoolsData(defaultLocation);
+        }
+    };
+
     useEffect(() => {
         fetchUserProfile();
+        fetchSchoolStats();
     }, []);
 
     if (loading) {
@@ -464,18 +528,9 @@ const Profile = () => {
 
                 <div style={statItemStyles}>
                     <span style={labelStyles}>🏫 Total Schools Added</span>
-                    <span style={valueStyles}>Loading...</span>
+                    <span style={valueStyles}>{stats.totalSchools}</span>
                 </div>
 
-                <div style={statItemStyles}>
-                    <span style={labelStyles}>📅 Account Age</span>
-                    <span style={valueStyles}>
-                        {userInfo?.createdAt ?
-                            Math.floor((new Date() - new Date(userInfo.createdAt)) / (1000 * 60 * 60 * 24)) + ' days'
-                            : 'N/A'
-                        }
-                    </span>
-                </div>
 
                 <div style={statItemStyles}>
                     <span style={labelStyles}>🔐 Account Status</span>

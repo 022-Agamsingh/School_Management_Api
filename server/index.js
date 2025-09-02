@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import User from "./src/models/user.js";
 import School from "./src/models/school.js";
 import connectDB from "./config/database.js";
@@ -14,13 +15,22 @@ import { userAuth } from "./middlewares/auth.js";
 dotenv.config();
 
 const app = express();
+
+
+app.use(cors({
+    origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:3000"],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 
 // Define routes first
-// app.get("/", (req, res) => {
-//     res.json({ message: "Server is running!" });
-// });
+app.get("/", (req, res) => {
+    res.json({ message: "Server is running!" });
+});
 
 app.post("/signup", async (req, res) => {
     try { 

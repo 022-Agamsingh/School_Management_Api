@@ -335,8 +335,8 @@ VITE_API_BASE_URL=https://your-backend-url.vercel.app
 #### Vercel Backend Settings
 
 ```
-MONGODB_URI=mongodb+srv://2002agamsingh:agam@week-7.hwe9ccb.mongodb.net/SchoolDB
-JWT_SECRET_KEY=Singh1147
+MONGODB_URI=mongodb+srv://2002agamsingh:<password>@week-7.hwe9ccb.mongodb.net/SchoolDB
+JWT_SECRET_KEY=Secret key
 NODE_ENV=production
 ```
 

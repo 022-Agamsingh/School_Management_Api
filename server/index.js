@@ -115,6 +115,10 @@ app.put("/profile",userAuth,async(req,res)=>{
         res.status(500).json({ error: "Internal server error" });
     }
 });
+app.use("/logout", userAuth, (req, res) => {
+    res.clearCookie("token");
+    res.status(200).json({ message: "User logged out successfully" });
+});
 app.delete("/profile",userAuth,async(req,res)=>{
     try{
         await User.findByIdAndDelete(req.user._id);
@@ -152,7 +156,7 @@ app.post("/addSchool", userAuth, async function(req, res) {
             longitude: lng
         });
 
-        // Save to MongoDB
+       
         const savedSchool = await newSchool.save();
 
         res.status(201).json({
@@ -204,7 +208,7 @@ app.get("/listSchools", async function(req, res) {
         
     
         const calculateDistance = (lat1, lng1, lat2, lng2) => {
-            const R = 6371; // Earth's radius in kilometers
+            const R = 6371;
             const dLat = toRadians(lat2 - lat1);
             const dLng = toRadians(lng2 - lng1);
             const a = 
@@ -248,7 +252,7 @@ app.get("/listSchools", async function(req, res) {
     }
 }); 
 
-// Start server after defining all routes
+
 connectDB()
 .then(() => {
     console.log("MongoDB connected");

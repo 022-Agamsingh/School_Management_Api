@@ -18,7 +18,13 @@ const app = express();
 
 
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:3001"],
+    origin: [
+        "http://localhost:5173", 
+        "http://localhost:5174", 
+        "http://localhost:3000",
+        "https://school-management-api-flame.vercel.app",
+        /^https:\/\/.*\.vercel\.app$/  // Allow all Vercel domains
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -34,9 +40,11 @@ app.get("/", (req, res) => {
 
 app.post("/signup", async (req, res) => {
     try { 
-       
+        console.log("Signup attempt:", req.body);
+        
         const validation = isvaildsignup(req);
         if (!validation.isValid) {
+            console.log("Validation failed:", validation.error);
             return res.status(400).json({ error: validation.error });
         }
 
@@ -44,13 +52,15 @@ app.post("/signup", async (req, res) => {
         const hashpassword = await bcrypt.hash(password, 10);
         const newUser = new User({ name, email, password: hashpassword });
         await newUser.save();
+        
+        console.log("User created successfully:", newUser._id);
         res.status(201).json({ message: "User registered successfully", user: newUser });
     } catch (error) {
-        console.error("Error registering user:", error.message);
+        console.error("Error registering user:", error);
         if (error.code === 11000) {
             res.status(400).json({ error: "Email already exists" });
         } else {
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: "Internal server error", details: error.message });
         }
     }
 });

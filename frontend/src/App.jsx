@@ -6,6 +6,7 @@ import AddSchool from './components/AddSchool';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Profile from './components/Profile';
+import { API_BASE_URL } from './config/api';
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('login');
@@ -42,7 +43,7 @@ const App = () => {
 
   const checkAuthStatus = async () => {
     try {
-      const response = await fetch('http://localhost:3000/profile', {
+      const response = await fetch(`${API_BASE_URL}/profile`, {
         method: 'GET',
         credentials: 'include',
         headers: {

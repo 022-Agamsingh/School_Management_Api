@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config/api';
 
 const AddSchool = () => {
     const [formData, setFormData] = useState({
@@ -235,7 +236,7 @@ const AddSchool = () => {
         setMessage('');
 
         try {
-            const response = await fetch('http://localhost:3000/addSchool', {
+            const response = await fetch(`${API_BASE_URL}/addSchool`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

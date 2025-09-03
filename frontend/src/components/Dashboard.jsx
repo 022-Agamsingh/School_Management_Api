@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config/api';
 
 const Dashboard = ({ onNavigate }) => {
     const [stats, setStats] = useState({
@@ -150,7 +151,7 @@ const Dashboard = ({ onNavigate }) => {
     const fetchSchoolsData = async (location) => {
         try {
             const response = await fetch(
-                `http://localhost:3000/listSchools?latitude=${location.latitude}&longitude=${location.longitude}`,
+                `${API_BASE_URL}/listSchools?latitude=${location.latitude}&longitude=${location.longitude}`,
                 {
                     method: 'GET',
                     credentials: 'include',

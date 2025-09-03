@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config/api';
 
 const Profile = () => {
     const [userInfo, setUserInfo] = useState(null);
@@ -174,7 +175,7 @@ const Profile = () => {
     const fetchSchoolsData = async (location) => {
         try {
             const response = await fetch(
-                `http://localhost:3000/listSchools?latitude=${location.latitude}&longitude=${location.longitude}`,
+                `${API_BASE_URL}/listSchools?latitude=${location.latitude}&longitude=${location.longitude}`,
                 {
                     method: 'GET',
                     credentials: 'include',
@@ -211,7 +212,7 @@ const Profile = () => {
         setError('');
 
         try {
-            const response = await fetch('http://localhost:3000/profile', {
+            const response = await fetch(`${API_BASE_URL}/profile`, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -276,7 +277,7 @@ const Profile = () => {
                 updateData.password = formData.password;
             }
 
-            const response = await fetch('http://localhost:3000/profile', {
+            const response = await fetch(`${API_BASE_URL}/profile`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {
